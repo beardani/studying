@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수능 역전 단어 300 - 민트 에메랄드 스튜디오</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'Inter', sans-serif],
+                    },
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(204, 251, 241, 0.5); }
+        ::-webkit-scrollbar-thumb { background: rgba(20, 184, 166, 0.4); border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(20, 184, 166, 0.7); }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(153, 246, 228, 0.6);
+            box-shadow: 0 20px 25px -5px rgba(20, 184, 166, 0.05), 0 10px 10px -5px rgba(20, 184, 166, 0.02);
+        }
+        .glass-card {
+            background: rgba(240, 253, 250, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(153, 246, 228, 0.8);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-emerald-50 via-teal-50/40 to-cyan-50/60 text-slate-800 min-h-screen flex flex-col selection:bg-teal-500 selection:text-white">
+
+    <!-- Glowing Background Orbs -->
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-teal-300/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-emerald-300/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Header -->
+    <header class="glass-panel sticky top-0 z-50 border-b border-teal-100 shadow-md">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3 cursor-pointer group" onclick="switchView('dashboard')">
+                <div class="bg-gradient-to-tr from-emerald-600 via-teal-500 to-cyan-500 text-white p-2.5 rounded-2xl shadow-lg shadow-teal-500/30 group-hover:scale-105 transition transform">
+                    <i class="fa-solid fa-seedling text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tight bg-gradient-to-r from-emerald-700 via-teal-600 to-cyan-600 bg-clip-text text-transparent">수능역전 단어 300</h1>
+                    <p class="text-xs text-teal-600 font-bold">민트 에메랄드 스튜디오 & 감성 암기</p>
+                </div>
+            </div>
+            
+            <nav class="flex items-center space-x-2 bg-teal-100/70 p-1.5 rounded-2xl border border-teal-200/80 shadow-inner">
+                <button onclick="switchView('dashboard')" id="nav-dashboard" class="px-5 py-2 rounded-xl text-sm font-semibold transition bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-md shadow-teal-500/25">
+                    <i class="fa-solid fa-grid-2 mr-2"></i> 학습 홈
+                </button>
+                <button onclick="switchView('flashcard')" id="nav-flashcard" class="px-5 py-2 rounded-xl text-sm font-semibold transition text-slate-600 hover:text-teal-700 hover:bg-white/60">
+                    <i class="fa-solid fa-clone mr-2"></i> 단어 카드
+                </button>
+                <button onclick="switchView('quiz')" id="nav-quiz" class="px-5 py-2 rounded-xl text-sm font-semibold transition text-slate-600 hover:text-teal-700 hover:bg-white/60">
+                    <i class="fa-solid fa-brain mr-2"></i> 퀴즈 테스트
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 md:p-8 z-10">
+
+        <!-- DASHBOARD VIEW -->
+        <section id="view-dashboard" class="space-y-8">
+            <!-- Hero Banner with Cute Characters -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white p-6 sm:p-10 shadow-2xl">
+                <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div class="space-y-3 max-w-xl">
+                        <span class="inline-flex items-center space-x-2 bg-black/20 text-teal-100 text-xs px-3.5 py-1.5 rounded-full font-bold uppercase tracking-wider border border-white/20">
+                            <i class="fa-solid fa-sparkles text-amber-300"></i> 2026 수능 파이널 코드 (민트 에디션)
+                        </span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
+                            아는 단어의 함정을 깨고<br>상위권으로 도약하세요
+                        </h2>
+                        <p class="text-teal-100 text-sm leading-relaxed">
+                            다의어 편(Day 1~5)과 필수 핵심어 편(Day 6~10) 총 300단어의 함정 포인트와 예문을 토비, 몽이와 함께 마스터하세요!
+                        </p>
+                    </div>
+                    
+                    <div class="glass-card p-6 rounded-2xl border border-white/30 shadow-2xl min-w-[240px] text-center space-y-3 bg-white/15 backdrop-blur-md">
+                        <div class="text-xs text-teal-100 font-bold uppercase tracking-wider">전체 암기 진척도</div>
+                        <div id="total-progress-text" class="text-3xl font-black text-white">0 / 300</div>
+                        <div class="w-full bg-black/20 h-3 rounded-full overflow-hidden p-0.5 border border-white/20">
+                            <div id="total-progress-bar" class="bg-gradient-to-r from-teal-300 to-emerald-200 h-full rounded-full transition-all duration-700 w-0"></div>
+                        </div>
+                        <div id="total-progress-percent" class="text-xs font-bold text-teal-200">0% 마스터 완료</div>
+                    </div>
+                </div>
+
+                <!-- Cute Character Speech Bubble Banner -->
+                <div class="mt-6 pt-6 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="text-3xl bg-white/20 p-2 rounded-2xl animate-float shadow-lg">🐰</div>
+                        <div class="bg-white/20 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/30 text-xs sm:text-sm font-semibold text-white">
+                            <span id="character-quote" class="text-teal-100">"오늘도 수능 역전을 향해 열심히 달려봐요! 토비가 응원할게요 🌟"</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl bg-white/20 p-2 rounded-2xl animate-float shadow-lg" style="animation-delay: 1s;">🐻</span>
+                        <span class="text-xs font-bold bg-black/20 text-teal-100 px-3 py-1.5 rounded-xl border border-white/20">스터디 메이트 토비 & 몽이</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day Selector Section -->
+            <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-slate-900 flex items-center">
+                        <i class="fa-solid fa-layer-group text-teal-600 mr-3"></i> 학습 코스 선택 (Day 01 ~ 10)
+                    </h3>
+                    <span class="text-xs text-slate-500 font-medium">원하는 Day를 선택해 카드를 학습하거나 퀴즈에 도전하세요</span>
+                </div>
+                
+                <div id="day-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- FLASHCARD VIEW -->
+        <section id="view-flashcard" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-center glass-panel p-4 rounded-2xl gap-4">
+                <button onclick="switchView('dashboard')" class="text-sm font-semibold text-slate-700 hover:text-slate-900 transition flex items-center bg-white px-4 py-2 rounded-xl border border-teal-200 shadow-sm">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> 홈으로 돌아가기
+                </button>
+                
+                <div class="flex items-center space-x-3">
+                    <select id="flashcard-day-select" onchange="changeFlashcardDay(this.value)" class="bg-white text-teal-900 font-bold text-sm px-4 py-2 rounded-xl border border-teal-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+
+                <div class="text-sm font-bold text-slate-700 bg-white px-4 py-2 rounded-xl border border-teal-200 shadow-sm">
+                    진행도: <span id="card-counter" class="text-teal-600">1 / 30</span>
+                </div>
+            </div>
+
+            <!-- 3D Flashcard Container -->
+            <div class="flex flex-col items-center justify-center py-2">
+                <div class="perspective-1000 w-full max-w-xl h-[460px] cursor-pointer group" onclick="flipCard()">
+                    <div id="flashcard-inner" class="relative w-full h-full duration-700 transform-style-3d rounded-3xl shadow-2xl">
+                        
+                        <!-- Front Face (Word) -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden flex flex-col justify-between p-8 rounded-3xl glass-panel border border-teal-200 shadow-2xl bg-white">
+                            <div class="flex justify-between items-center">
+                                <span id="card-num" class="bg-teal-100 text-teal-800 font-bold text-xs px-3.5 py-1.5 rounded-full border border-teal-200">#001</span>
+                                <span class="text-xs text-teal-600 font-medium flex items-center bg-teal-50 px-3 py-1 rounded-full"><i class="fa-solid fa-rotate mr-1.5 animate-spin"></i> 카드를 클릭하여 뜻 & 예문 확인</span>
+                            </div>
+                            <div class="text-center my-auto space-y-2">
+                                <h2 id="card-word" class="text-5xl sm:text-6xl font-black text-slate-900 tracking-tight">register</h2>
+                                <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Vocabulary Card</p>
+                            </div>
+                            <div class="text-center text-xs text-slate-500 font-medium flex items-center justify-center space-x-2">
+                                <span>🐰 토비: "암기 척척 진행 중!"</span>
+                            </div>
+                        </div>
+
+                        <!-- Back Face (Meaning, Trap & Example) -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 flex flex-col justify-between p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-teal-950 to-emerald-950 border border-teal-500/40 shadow-2xl text-white overflow-y-auto">
+                            <div class="flex justify-between items-center">
+                                <span class="bg-teal-500/30 text-teal-200 font-bold text-xs px-3.5 py-1.5 rounded-full border border-teal-400/40">의미 & 함정 & 예문</span>
+                                <button onclick="event.stopPropagation(); toggleMemorized()" id="memorized-badge" class="text-xs px-4 py-1.5 rounded-full font-bold transition flex items-center space-x-1.5 bg-slate-800 text-slate-200 hover:bg-emerald-600 hover:text-white border border-slate-700">
+                                    <i class="fa-solid fa-check"></i> <span>암기 미완료</span>
+                                </button>
+                            </div>
+                            
+                            <div class="my-auto space-y-4 py-2">
+                                <div>
+                                    <div class="text-xs text-teal-300 uppercase tracking-wider font-bold mb-1">핵심 뜻</div>
+                                    <div id="card-meaning" class="text-lg sm:text-xl font-black text-white leading-snug">(감정을) 드러내다 / 인지하다 감지하다</div>
+                                </div>
+                                <div class="bg-black/40 p-3.5 sm:p-4 rounded-2xl border border-amber-500/40 shadow-inner">
+                                    <div class="text-xs text-amber-400 font-extrabold flex items-center mb-1">
+                                        <i class="fa-solid fa-triangle-exclamation mr-1.5 text-sm"></i> 수능 함정 포인트
+                                    </div>
+                                    <div id="card-trap" class="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
+                                        '등록하다(기계가 기록하다)'로만 알면 오역 - 감정을 드러내거나 무언가를 인지·감지한다는 뜻도 있음.
+                                    </div>
+                                </div>
+                                <div class="bg-black/40 p-3.5 sm:p-4 rounded-2xl border border-teal-500/40 shadow-inner">
+                                    <div class="text-xs text-teal-300 font-extrabold flex items-center mb-1">
+                                        <i class="fa-solid fa-quote-left mr-1.5 text-sm"></i> 실전 예문
+                                    </div>
+                                    <div id="card-example" class="text-xs sm:text-sm text-teal-100 italic leading-relaxed">
+                                        "Moreover, they register this connection actively..."
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center text-xs text-teal-300/80">
+                                다음 카드로 넘어가려면 하단 버튼을 이용하세요.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="flex items-center justify-center space-x-4 mt-6 w-full max-w-xl">
+                    <button onclick="prevCard()" class="flex-1 bg-white hover:bg-teal-50 text-slate-700 font-bold py-3.5 px-6 rounded-2xl shadow-md border border-teal-200 transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-arrow-left"></i> <span>이전 단어</span>
+                    </button>
+                    <button onclick="nextCard()" class="flex-1 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:opacity-95 text-white font-bold py-3.5 px-6 rounded-2xl shadow-xl shadow-teal-500/30 transition flex items-center justify-center space-x-2">
+                        <span>다음 단어</span> <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ VIEW -->
+        <section id="view-quiz" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-center glass-panel p-4 rounded-2xl gap-4">
+                <button onclick="switchView('dashboard')" class="text-sm font-semibold text-slate-700 hover:text-slate-900 transition flex items-center bg-white px-4 py-2 rounded-xl border border-teal-200 shadow-sm">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> 홈으로 돌아가기
+                </button>
+                
+                <div class="flex items-center space-x-3">
+                    <select id="quiz-day-select" onchange="startQuiz(this.value)" class="bg-white text-teal-900 font-bold text-sm px-4 py-2 rounded-xl border border-teal-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+
+                <div class="text-sm font-bold text-slate-700 bg-white px-4 py-2 rounded-xl border border-teal-200 shadow-sm">
+                    문제: <span id="quiz-counter" class="text-teal-600">1 / 10</span>
+                </div>
+            </div>
+
+            <!-- Quiz Question Box -->
+            <div id="quiz-box" class="glass-panel p-6 sm:p-10 rounded-3xl shadow-2xl border border-teal-200 max-w-xl mx-auto space-y-6 bg-white">
+                <div>
+                    <span class="bg-teal-100 text-teal-900 font-bold text-xs px-3.5 py-1.5 rounded-full border border-teal-200 inline-block mb-3">
+                        <i class="fa-solid fa-brain mr-1 text-teal-600"></i> 실력 확인 퀴즈 🐻 몽이의 챌린지
+                    </span>
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                        다음 뜻에 알맞은 단어를 선택하세요:
+                    </h3>
+                    <div class="mt-4 p-5 bg-teal-50/50 rounded-2xl border border-teal-200 text-teal-950 font-bold text-lg leading-relaxed shadow-inner" id="quiz-prompt-text">
+                        (뜻 내용)
+                    </div>
+                </div>
+
+                <div id="quiz-options" class="space-y-3">
+                    <!-- Options populated dynamically -->
+                </div>
+
+                <div id="quiz-feedback" class="hidden p-4 rounded-2xl font-bold text-sm"></div>
+
+                <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="hidden w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:opacity-95 text-white font-bold py-4 rounded-2xl shadow-xl shadow-teal-500/30 transition">
+                    다음 문제로 이동 <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+
+            <!-- Quiz Result Box -->
+            <div id="quiz-result-box" class="hidden glass-panel p-8 sm:p-12 rounded-3xl shadow-2xl border border-teal-200 max-w-xl mx-auto text-center space-y-6 bg-white">
+                <div class="w-20 h-20 bg-gradient-to-tr from-emerald-500 to-teal-400 text-white rounded-3xl flex items-center justify-center text-3xl mx-auto shadow-xl shadow-teal-500/30 animate-bounce">
+                    🐻
+                </div>
+                <div>
+                    <h3 class="text-3xl font-black text-slate-900">퀴즈 마스터 완료!</h3>
+                    <p class="text-slate-500 text-sm mt-1">몽이와 토비가 당신의 수능 역전을 응원합니다!</p>
+                </div>
+                <div class="bg-teal-50 p-6 rounded-2xl border border-teal-200">
+                    <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">최종 정답 개수</div>
+                    <div id="quiz-score-text" class="text-5xl font-black text-teal-600 mt-2">8 / 10</div>
+                </div>
+                <div class="flex space-x-3 pt-2">
+                    <button onclick="startQuiz(currentDay)" class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 text-white font-bold py-4 rounded-2xl shadow-lg shadow-teal-500/30 transition">
+                        다시 풀기
+                    </button>
+                    <button onclick="switchView('dashboard')" class="flex-1 bg-white hover:bg-teal-50 text-slate-700 font-bold py-4 rounded-2xl border border-teal-200 transition shadow-sm">
+                        홈으로 가기
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-slate-500 border-t border-teal-200 mt-auto z-10 bg-white/40 backdrop-blur-sm">
+        수능역전 단어 300 민트 에메랄드 스튜디오 &copy; 2026 All Rights Reserved.
+    </footer>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-teal-500/40 transform translate-y-28 opacity-0 transition-all duration-300 z-50 flex items-center space-x-3 text-sm font-semibold">
+        <i class="fa-solid fa-circle-check text-teal-400 text-lg"></i>
+        <span id="toast-message">메시지 내용</span>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        // Character Quotes Rotation
+        const quotes = [
+            "\"오늘도 수능 역전을 향해 열심히 달려봐요! 토비가 응원할게요 🌟\"",
+            "\"벌써 여기까지 암기했다니 정말 대단해요! 🐻 몽이가 간식 쏠게요!\"",
+            "\"포기하지 않으면 반드시 수능 단어는 내 것이 됩니다! 파이팅! ✨\"",
+            "\"수능 함정 단어도 토비와 함께라면 완벽 정복 가능해요! 🐰\""
+        ];
+        
+        setInterval(() => {
+            const quoteEl = document.getElementById('character-quote');
+            if (quoteEl) {
+                const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                quoteEl.innerText = randomQuote;
+            }
+        }, 6000);
+
+        // Full Dataset for Day 01 to Day 10 with Examples
+        const vocabData = {
+            1: [
+                {id: 1, word: "register", meaning: "(감정을) 드러내다 / 인지하다 감지하다", trap: "'등록하다(기계가 기록하다)'로만 알면 오역 - 감정을 드러내거나 인지한다는 뜻도 있음.", example: "Moreover, they register this connection actively, imitating a variety of facial gestures."},
+                {id: 2, word: "discount", meaning: "경시하다 / 평가절하하다 / 낮게 치다", trap: "'할인하다/할인'만 떠올리면 안 됨 - 추상 글에서 오독 위험.", example: "Biological organisms discount distant outputs over those available at the present time."},
+                {id: 3, word: "grain", meaning: "결 / 본성·성미 (against the grain)", trap: "'곡물·알갱이'로만 알면 오독 - against the grain은 '본성에 거슬러'라는 관용구.", example: "Spectacle is produced by working with the grain of a particular culture."},
+                {id: 4, word: "resolution", meaning: "해상도 / 해상력", trap: "'결심·결의'로만 알면 오독 - temporal resolution(시간 해상도) 등에서 쓰임.", example: "Temporal resolution is particularly interesting in the context of satellite remote sensing."},
+                {id: 5, word: "dispose", meaning: "(~하는) 경향을 갖게 하다 / ~하게 만들다", trap: "'버리다·처리하다'로만 알면 통째 오역 - dispose A to는 경향을 갖게 함.", example: "Emotions dispose one to see the world in a distorted way."},
+                {id: 6, word: "fashion", meaning: "방식, 방법", trap: "'패션, 유행'만 알면 완전히 오역 - in a ~ fashion = 한 방식으로.", example: "This ends up requiring people to behave in machine-like fashion."},
+                {id: 7, word: "critical", meaning: "매우 중요한, 필수적인", trap: "'비판적인/위기의'만 알면 오역 1순위 - It is critical to (~하는 것이 매우 중요하다).", example: "Factors critical to bringing about stable institutional solutions."},
+                {id: 8, word: "odd", meaning: "홀수의", trap: "'이상한, 기이한'만 알면 odd number(홀수)를 못 읽음.", example: "Groups with an even number differ from groups with an odd number."},
+                {id: 9, word: "late", meaning: "고(故) / 작고한", trap: "'늦은'으로만 알면 the late + 인명(작고한)과 the late 1950s(후반)를 오독.", example: "The late photographer Jim Marshall is regarded as one of the most celebrated."},
+                {id: 10, word: "sharp", meaning: "뚜렷한, 극명한; 급격한, 가파른", trap: "'날카로운, 예리한'만 알면 좁음 - sharp distinction(뚜렷한 구분).", example: "People often imagine a sharp separation from streets, cars, and buildings."},
+                {id: 11, word: "suit", meaning: "~에 맞다 / 적합하다 / 어울리다", trap: "'정장·소송'만 떠올리면 안 됨 - 동사로 쓰이면 ~에 맞다.", example: "These courses are designed to suit any level, from beginner to advanced."},
+                {id: 12, word: "conduct", meaning: "행동 / 품행 / 처신", trap: "수행하다/지휘하다 외에 명사 '품행(code of conduct)'을 구분해야 함.", example: "It also creates a pattern of conduct that enables people to produce music."},
+                {id: 13, word: "stem", meaning: "~에서 비롯되다 / 기인하다 (stem from)", trap: "명사 '줄기'와 구분 - stem from은 '~에서 비롯되다'.", example: "Changing, which always stems from a firm decision, becomes job number one."},
+                {id: 14, word: "agent", meaning: "행위 주체 / 행위자", trap: "'대리인·요원'만이 아니라 '행위 주체'라는 뜻으로 자주 나옴.", example: "Human beings do not enter the world as competent moral agents."},
+                {id: 15, word: "afford", meaning: "제공하다 / 주다", trap: "'~할 여유가 있다'만이 아니라 '제공하다/주다'라는 뜻으로도 쓰임.", example: "To afford themselves a modicum of safety."},
+                {id: 16, word: "frame", meaning: "짓다 / 규정하다", trap: "명사 '액자틀·뼈대'뿐만 아니라 동사로 '틀 짓다, 규정하다'라는 뜻이 있음.", example: "People are framed as bounded social actors."},
+                {id: 17, word: "exploit", meaning: "이용하다 / 활용하다", trap: "'착취하다'로만 알면 안 됨 - 중립적으로 '이용하다/활용하다'라는 뜻도 있음.", example: "The reindeer had a weakness that mankind would mercilessly exploit."},
+                {id: 18, word: "capital", meaning: "자본", trap: "'수도·대문자'만이 아니라 경제 글에서는 '자본'이라는 뜻으로 나옴.", example: "The arrival of the Industrial Age changed the relationship among time, labor, and capital."},
+                {id: 19, word: "spring", meaning: "생겨나다 / 유래하다 (spring from)", trap: "'봄·용수철'만 알면 안 됨 - spring from은 '~에서 생겨나다'.", example: "An individual springing from the book with tremendous charisma."},
+                {id: 20, word: "cast", meaning: "그림자를 드리우다 / 던지다", trap: "'배역·출연진'만이 아니라 그림자를 드리우다(cast a shadow)로 쓰임.", example: "Jessie pulled out the line and cast it back into the water."},
+                {id: 21, word: "account", meaning: "설명하다 / ~의 이유가 되다 (account for)", trap: "'계좌·고려하다' 외에 account for는 '~의 이유가 되다'.", example: "It is this utopian aspect of movies that accounts for why we enjoy them."},
+                {id: 22, word: "nature", meaning: "본질 / 성질", trap: "'자연'으로만 알면 추상 글에서 오독 - the nature of ~는 ~의 본질·성질.", example: "A clock is really a process embodied in a machine, and the nature of that process is repetitive."},
+                {id: 23, word: "subject", meaning: "피험자 / 대상 / 주제", trap: "학교 '과목' 외에 실험 지문에서는 '피험자'로 자주 쓰임.", example: "Subjects must give their informed, written consent."},
+                {id: 24, word: "ground", meaning: "근거 / 기반", trap: "'땅·운동장'만이 아니라 grounds는 '근거'라는 뜻으로 자주 나옴.", example: "Setting up the ground for self-transformation and the continuation of life."},
+                {id: 25, word: "draw", meaning: "끌어오다 / 의존하다 (draw on)", trap: "draw on = ~을 활용·이용하다, draw a conclusion = 결론 도출.", example: "Designers draw on their experience of design when approaching a new project."},
+                {id: 26, word: "pronounced", meaning: "뚜렷한 / 현저한", trap: "동사 '발음하다'의 과거분사가 아니라 형용사로 '뚜렷한/현저한' 뜻.", example: "The connection between clothing and social status was so pronounced."},
+                {id: 27, word: "attribute", meaning: "~의 탓으로 돌리다 / ~의 덕분으로 보다", trap: "명사 '속성·특성'과 동사 'attribute A to B'를 구분해야 함.", example: "Not all residents attribute environmental damage to tourism."},
+                {id: 28, word: "compound", meaning: "(문제를) 악화시키다 / 가중하다", trap: "'화합물·복합체'만이 아니라 동사로 문제를 악화시키다라는 뜻이 있음.", example: "Because of their increased mass, compounded by the fact that they are falling."},
+                {id: 29, word: "term", meaning: "~의 관점에서, ~라는 면에서 (in terms of)", trap: "학기·기간 외에 in terms of는 '~의 관점에서', terms(복수)는 '조건'.", example: "When settlement terms don't have to be implemented until months in the future."},
+                {id: 30, word: "means", meaning: "수단, 방법", trap: "mean(의미하다)의 변화형이 아니라 명사 '수단'. a means to an end.", example: "Money is nothing more than a means to an end."}
+            ],
+            2: [
+                {id: 31, word: "appreciate", meaning: "제대로 이해하다, 진가를 알아보다; (가치가) 오르다", trap: "'감사하다'만 알면 지문에서 막힘 - 제대로 이해하다/진가를 알다.", example: "Tempting those seeking to understand and appreciate the past."},
+                {id: 32, word: "secure", meaning: "확보하다, 얻어내다; 안정된", trap: "형용사 '안전한'만 알면 동사에서 막힘 - secure peace.", example: "Maintain an effective legal framework in order to secure peace."},
+                {id: 33, word: "cultivate", meaning: "(재능·관계·습관을) 기르다, 함양하다", trap: "'경작하다'만 알면 추상 지문에서 막힘 - cultivate creativity.", example: "The creativity that children possess needs to be cultivated throughout their development."},
+                {id: 34, word: "state", meaning: "(어떤) 상태; 진술하다, 말하다", trap: "'국가·주'만 알면 오역 - state of mind (마음 상태).", example: "Asked to identify the expression or state of mind evinced."},
+                {id: 35, word: "degree", meaning: "(양·수준의) 정도", trap: "'학위·온도'만 알면 추상 지문에서 막힘 - a degree of (~의 정도).", example: "This created a considerable degree of social influence."},
+                {id: 36, word: "face", meaning: "직면하다, 마주하다", trap: "'얼굴' 명사만 알면 틀림 - 동사 face = 문제·상황에 직면하다.", example: "Whenever we face difficulties and challenges in the long journey."},
+                {id: 37, word: "host", meaning: "수많은 다수의 (a host of); 숙주", trap: "'주인·진행자'만 알면 막힘 - a host of = 수많은, 생물 지문은 숙주.", example: "Fashion contains a host of ambiguities."},
+                {id: 38, word: "head", meaning: "책임자, 대표, 장(長); ~로 향하다", trap: "the head of ~의 책임자. 동사 head to/for = ~로 향하다.", example: "Anna, the head of the club, was teaching the new members."},
+                {id: 39, word: "mean", meaning: "수단, 방법; 비열한; 평균", trap: "a means for (~를 위한 수단). 형용사면 비열한, 명사엔 평균 뜻.", example: "Movies serve as a means for its reproduction over time."},
+                {id: 40, word: "second", meaning: "(시간) 초; 찬성·지지하다", trap: "seconds는 시간 단위 '초', 동사 second는 (의견을) 지지하다.", example: "Feels the duration to be 40 seconds."},
+                {id: 41, word: "project", meaning: "투사하다 / (이미지를) 드러내다 나타내다", trap: "명사 '계획'만이 아니라 동사로 투사하다라는 뜻이 있음.", example: "Buildings arouse an empathetic reaction in us through these projected experiences."},
+                {id: 42, word: "authority", meaning: "당국 / 기관 (권한을 가진)", trap: "'권위'만이 아니라 복수형이나 문맥에 따라 '당국·기관'이라는 뜻.", example: "The temple functioned as an administrative authority."},
+                {id: 43, word: "interest", meaning: "이해관계 / 이익", trap: "'흥미, 이자'만이 아니라 '이해관계/이익'이라는 뜻으로도 자주 나옴.", example: "The areas of common interest may be clarified and refined."},
+                {id: 44, word: "even", meaning: "~조차 / 심지어 (부사); 평평한", trap: "부사 '심지어'로만 알아 형용사 '짝수의'를 놓침.", example: "Even those with average talent can produce notable work."},
+                {id: 45, word: "embrace", meaning: "포괄하다 / 아우르다 / 다루다", trap: "'포옹하다'만이 아니라 포괄하다, 생각을 받아들인다라는 뜻.", example: "So long as they do not try to embrace all of them at once."},
+                {id: 46, word: "green", meaning: "친환경의; 미숙한, 경험 없는", trap: "green technology = 친환경 기술, a green hand = 미숙한 사람.", example: "Rare metals are key ingredients in green technologies such as electric cars."},
+                {id: 47, word: "settle", meaning: "(분쟁·거래를) 해결하다, 합의하다", trap: "settle the deal/case는 거래·분쟁을 '해결·합의·매듭짓다'.", example: "Their biggest fears are high fees for a case that may take years to settle."},
+                {id: 48, word: "plant", meaning: "(나무·씨앗을) 심다; 발전소·공장", trap: "명사 power plant처럼 '공장·발전소'가 수능 단골.", example: "Transport from remote power plants or municipal incinerators."},
+                {id: 49, word: "strike", meaning: "(감정·기억을) 불러일으키다 (strike a chord)", trap: "strike a chord = (마음에) 와닿다/공감을 불러일으키다 관용구.", example: "To human eyes, these greetings strike a familiar chord."},
+                {id: 50, word: "sanction", meaning: "제재를 가하다, 처벌하다; 승인하다", trap: "승인하다와 제재하다라는 정반대 두 뜻을 동시에 가진 대표적 함정어.", example: "She may threaten to sanction them for not behaving as she wishes."},
+                {id: 51, word: "discipline", meaning: "(학문) 분야, 학과", trap: "'규율/훈육'만 알면 오역 - 복수형 disciplines는 대개 '학문 분야'.", example: "Philosophy allows us to ask much broader questions than many other scientific disciplines."},
+                {id: 52, word: "play", meaning: "(역할을) 하다, 작용하다", trap: "play a role (역할을 하다) 콜로케이션으로 추상적으로 쓰임.", example: "Establish roles individuals play within the legal system."},
+                {id: 53, word: "form", meaning: "형성하다, 만들다 (동사); 서식·양식", trap: "명사 '형태' 외에 동사 '형성하다'와 문서 '서식·양식'을 뜻함.", example: "Sometimes these internal narratives we form not only shape our beliefs."},
+                {id: 54, word: "character", meaning: "등장인물", trap: "'성격·특징'만이 아니라 문학 글에서는 '등장인물'이라는 뜻으로 나옴.", example: "He or she feels close to certain characters and shares their responses."},
+                {id: 55, word: "assume", meaning: "가정하다 / 당연시하다", trap: "'떠맡다, 권력을 잡다'도 되지만, 자주 쓰이는 건 '가정하다·당연시하다'.", example: "People often assume that synthetic food ingredients are more harmful."},
+                {id: 56, word: "matter", meaning: "문제 / 사안", trap: "물질이 아니라 the displacement of a comma may be a matter of life and death.", example: "The displacement of a comma, for instance, may be a matter of life and death."},
+                {id: 57, word: "figure", meaning: "인물 / 수치", trap: "그림·숫자 외에 fictional figures = 허구적 인물.", example: "Characteristics and traits of fictional figures."},
+                {id: 58, word: "article", meaning: "기사 / 논문 / 글", trap: "물품·관사 외에 언론 기사 뜻으로 자주 쓰임.", example: "Yesterday, I happened to read an article about your club."},
+                {id: 59, word: "credit", meaning: "공로 / 인정", trap: "'신용·학점'만이 아니라 '공로 인정'이라는 뜻으로 자주 나옴.", example: "Not based on something you can take credit for."},
+                {id: 60, word: "party", meaning: "당사자 / 정당", trap: "파티 뜻 외에 contracting parties = 계약 당사자들.", example: "When contracting parties have developed reputational capital."}
+            ],
+            3: [
+                {id: 61, word: "work", meaning: "작품 / 저작", trap: "'일·작동하다' 외에 시인의 작품(the poet's work)을 뜻함.", example: "Readers would not simply attend to the poet's work."},
+                {id: 62, word: "end", meaning: "목적 / 목표", trap: "means to an end = 목적을 위한 수단.", example: "Money is nothing more than a means to an end."},
+                {id: 63, word: "close", meaning: "면밀한 / 긴밀한", trap: "close reading = 면밀한, close relationship = 긴밀한.", example: "Close collaboration between philosophy and neuroscience is required."},
+                {id: 64, word: "address", meaning: "다루다 / 처리하다", trap: "'주소'만 알면 안 됨 - address a problem (문제를 다루다·처리하다).", example: "In order to address serious noise issues in school."},
+                {id: 65, word: "serve", meaning: "~역할을 하다 / 기여하다", trap: "serve as ~ = ~로서 역할을 하다, (목적에) 기여하다.", example: "Serve as a means for its reproduction over time."},
+                {id: 66, word: "charge", meaning: "맡다 / 담당하다 (take charge of)", trap: "청구하다/충전하다와 구별 - take charge of = 담당하다.", example: "He took charge of about a dozen failing special ed kids."},
+                {id: 67, word: "lie", meaning: "(~에) 있다 / 자리하다", trap: "거짓말하다/눕다 외에 lie in/at = ~에 있다.", example: "A contour line connects all points that lie at the same elevation."},
+                {id: 68, word: "fit", meaning: "(~에) 들어맞다 / 적합하다", trap: "fit in = 잘 들어맞다/어울리다. 형용사 '건강한'과 구별.", example: "If a result fit what they expected, they kept it."},
+                {id: 69, word: "mark", meaning: "나타내다 / 특징짓다", trap: "mark A as B = A를 B로 특징짓다. marked = 뚜렷한.", example: "Political rallies and electoral parades that marked Jacksonian America."},
+                {id: 70, word: "present", meaning: "제시하다 / 발표하다", trap: "선물·현재와 구별 - present = 제시·발표하다 (동사).", example: "Facial gestures that are presented to them."},
+                {id: 71, word: "spot", meaning: "발견하다 / 알아채다", trap: "점·장소 외에 notice(발견하다)의 동의어로 쓰임.", example: "One immediate reason was easy enough to spot."},
+                {id: 72, word: "stand", meaning: "(어떤 상태·위치에) 있다", trap: "서다·참다 외에 위치·상태로 있다 (can't stand = 참을 수 없다).", example: "The author's subjective conception stands between the reader and the world."},
+                {id: 73, word: "pretty", meaning: "상당히 / 꽤", trap: "형용사 '예쁜'으로만 알아 부사 '꽤/상당히'를 놓치기 쉬움.", example: "Actually, it's pretty hard walking him every day."},
+                {id: 74, word: "mild", meaning: "순한 / 자극적이지 않은", trap: "날씨 '온화한'으로만 알면 맛 '순한/자극적이지 않은'을 놓침.", example: "Its mild flavour and taste have become familiar to many Americans."},
+                {id: 75, word: "moderate", meaning: "보통의 / 중간의 / 적당한", trap: "동사 '완화하다/사회를 보다'와 구분. 형용사는 중간의.", example: "Maintaining moderate to high levels of productivity."},
+                {id: 76, word: "capacity", meaning: "수용력, 용량 / 자격, 지위", trap: "carrying capacity = (환경) 수용력, in the capacity of = ~의 자격으로.", example: "Particular attractions that have limited capacity."},
+                {id: 77, word: "volume", meaning: "양, 분량; 부피; (책) 권", trap: "소리 크기(볼륨)만 알면 오역 - the volume of = ~의 양/분량.", example: "Greater speed and volume than ever before."},
+                {id: 78, word: "respect", meaning: "(~면, ~점) 측면", trap: "존경 외에 in this respect = '이런 점에서', in some respects.", example: "The fictional world deviates from the real one in one important respect."},
+                {id: 79, word: "reflect", meaning: "반영하다, 나타내다; 곰곰이 생각하다", trap: "반사하다만 알면 부족 - reflect on = ~을 곰곰이 생각하다.", example: "These differences may reflect the greater need of larger groups."},
+                {id: 80, word: "capture", meaning: "(사진·글로) 담아내다, 포착하다; 사로잡다", trap: "capture attention = 관심을 사로잡다, capture imagery = 이미지를 담아내다.", example: "Helped him capture some of his most vivid and iconic imagery."},
+                {id: 81, word: "maintain", meaning: "주장하다 / 유지하다", trap: "유지하다 외에 '주장하다(maintain that ~)'라는 뜻도 있음.", example: "Desire to maintain good relationships with others."},
+                {id: 82, word: "remote", meaning: "원격의; (가능성이) 희박한", trap: "외딴/먼 외에 remote sensing = 원격 탐사, a remote chance = 희박한 가능성.", example: "The percentage of remote workers in the information sector."},
+                {id: 83, word: "free", meaning: "(~이) 없는 / ~에서 벗어난 (free of/from)", trap: "무료/자유로운 외에 stress-free, free from error (-이 없는).", example: "Freeing up our conscious mind for more important jobs."},
+                {id: 84, word: "right", meaning: "권리", trap: "옳은/오른쪽 외에 명사 rights = 권리 (human rights).", example: "Seen as a violation of human rights."},
+                {id: 85, word: "miss", meaning: "(요점·기회를) 놓치다; 빠지다, 결석하다", trap: "그리워하다 외에 miss the point = 요점을 놓치다, miss a class = 수업에 빠지다.", example: "The impact of missing that grant deadline may be greater."},
+                {id: 86, word: "store", meaning: "저장하다 / 보관하다 / 비축하다", trap: "가게(명사)만 알면 틀림 - 동사 store = 저장·보관하다.", example: "Includes memorizing and storing a richly structured database."},
+                {id: 87, word: "match", meaning: "어울리다, 일치하다; 연결하다", trap: "경기·시합 외에 동사 match는 어울리다/일치하다/짝지어 주다.", example: "I think it matches your bicycle perfectly."},
+                {id: 88, word: "model", meaning: "모형, (이론·경제) 모델; 본뜨다", trap: "패션 모델만 떠올리지 말 것 - 학술 지문에선 이론 모형.", example: "Changing their business models by focusing on profitable units."},
+                {id: 89, word: "sense", meaning: "감지하다 / 인지하다", trap: "감각·의미 명사 외에 동사로 '감지하다/인지하다'라는 뜻이 있음.", example: "Felix could sense that his brother was excited."},
+                {id: 90, word: "practice", meaning: "실천하다 / 실행하다", trap: "연습 외에 practice = 실천·실행하다, 명사 관행(practice)도 빈출.", example: "They create the very practice that allows people to play baseball."}
+            ],
+            4: [
+                {id: 91, word: "light", meaning: "(~한) 관점 / 견지", trap: "빛 외에 in a light / in view of 관점 표현.", example: "When considered in this light, the visual preoccupation becomes meaningful."},
+                {id: 92, word: "point", meaning: "(주장의) 요점·핵심 (have a point)", trap: "점·끝·점수 외에 'You have a point' = 네 말이 일리가 있다.", example: "To argue that knowledge is not progressing misses the point."},
+                {id: 93, word: "order", meaning: "순서·차례; 질서", trap: "명령·주문 말고 '순서·질서'가 수능 핵심.", example: "Connection with the invisible, underlying order of things."},
+                {id: 94, word: "constitute", meaning: "~에 해당하다 / ~이 되다 (A=B)", trap: "구성하다로만 외우면 A=B라는 뜻을 놓침. A constitutes B.", example: "Throwing three heads in a row constitutes a win."},
+                {id: 95, word: "economical", meaning: "간결한, 군더더기 없는, 효율적인", trap: "돈을 아끼는이 아니라 '불필요한 것 없이 간결한/효율적인'.", example: "The more economical the systematization, the deeper our understanding."},
+                {id: 96, word: "staple", meaning: "주식(主食)의, 주요한", trap: "스테이플러 심만 떠올리면 오역 - staple crop/food = 주식 작물.", example: "A staple crop, such as maize, is not being produced in a sufficient amount."},
+                {id: 97, word: "gross", meaning: "극심한, 심한, 명백한", trap: "총액의(gross income) 뜻 외에 불평등 등과 쓰이면 '극심한/명백한'.", example: "That gross human inequality is still widespread."},
+                {id: 98, word: "regard", meaning: "간주하다, 여기다 (regard A as B)", trap: "관심·고려 외에 regard A as B 구문 숙지.", example: "Regarded the measurable tone as the primary and essential condition."},
+                {id: 99, word: "relief", meaning: "(지형의) 고저·기복 / 양각", trap: "안도·안심, 고통의 완화 외에 지형의 고저나 조각의 양각을 뜻하기도 함.", example: "A reader can go for miles without relief."},
+                {id: 100, word: "check", meaning: "억제 / 저지 (in check)", trap: "확인하다 외에 keep in check = ~을 억제·저지하다.", example: "She checked her daughter's room and found that Mia was absorbed."},
+                {id: 101, word: "succeed", meaning: "뒤를 잇다 / 대체되다 (계승)", trap: "성공하다 외에 뒤를 잇다/계승하다 (succession).", example: "More salmon then followed and succeeded."},
+                {id: 102, word: "observe", meaning: "말하다 / 논평하다", trap: "관찰하다, 준수하다 외에 인용 도입 시 말하다/논평하다.", example: "They will observe the regularity of behavior and decide."},
+                {id: 103, word: "minute", meaning: "극히 작은, 미세한 (my-NUTE 발음)", trap: "시간 '분'으로만 알면 큰일 - 형용사 minute은 '아주 미세한'.", example: "Walking within minutes of waking."},
+                {id: 104, word: "bow", meaning: "절하다, 고개 숙이다 (bau 발음); 뱃머리", trap: "활(bow, 보우)과 절하다(bau, 바우) 발음과 뜻 구별.", example: "Hunting these fast animals with spear or bow and arrow."},
+                {id: 105, word: "vehicle", meaning: "수단 / 매개체", trap: "차량·탈것 외에 제목 선지 등에서 추상적 '수단'으로 쓰임.", example: "A preferred last-mile vehicle, particularly in high-density areas."},
+                {id: 106, word: "scale", meaning: "(지도의) 축척", trap: "규모·저울 외에 지도의 축척, economies of scale (규모의 경제).", example: "Moving up in scale, without some awareness of spatial relationships."},
+                {id: 107, word: "measure", meaning: "척도 / 기준", trap: "측정하다 외에 명사로 '척도·기준'이라는 뜻을 기억할 것.", example: "It often requires great cleverness to conceive of measures."},
+                {id: 108, word: "yield", meaning: "굴복하다 / 수긍하다 (따르다)", trap: "수확량·생산하다 외에 '굴복하다, 수긍하다'라는 뜻도 있음.", example: "Potentially yield more positive experiences."},
+                {id: 109, word: "novel", meaning: "새로운 / 참신한", trap: "소설(명사)만 알면 안 됨 - 형용사로 '새로운·참신한(= new)'.", example: "Unlike the original novel, Apocalypse Now is set in Vietnam."},
+                {id: 110, word: "sentence", meaning: "형벌 / 선고", trap: "문장 외에 Satellites are collecting imagery as you read this sentence.", example: "Satellites are collecting a great deal of imagery as you read this sentence."},
+                {id: 111, word: "reason", meaning: "이성(理性) / 추론", trap: "이유 외에 추론 지문에서 이성·추론으로 쓰임.", example: "A film produced and directed by Francis Ford Coppola, and for good reason."},
+                {id: 112, word: "fine", meaning: "미세한 / 정밀한", trap: "좋은·벌금 외에 fine-grained (미세한), fine art (순수미술).", example: "Artefacts described as fine or decorative art."},
+                {id: 113, word: "bound", meaning: "반드시 ~하게 되어 있는", trap: "묶인·행의 경계 외에 bound to = 반드시 ~함.", example: "Writers normally feel bound by the rules and traditions."},
+                {id: 114, word: "pose", meaning: "위협·문제를 제기하다 / 가하다", trap: "포즈를 취하다 외에 pose a threat/problem = 위협/문제를 제기하다.", example: "I'm wondering if you can pose in front of the rock."},
+                {id: 115, word: "content", meaning: "만족한; 만족시키다 (conTENT 강세)", trap: "내용(물) 명사 외에 뒤에 강세가 오면 '만족한'.", example: "Negative impact on the content, sometimes fatally."},
+                {id: 116, word: "exercise", meaning: "(권력·영향력을) 행사하다", trap: "운동·연습 외에 권력이나 영향력을 행사하다라는 뜻으로도 씀.", example: "The purpose of the exercise is to demonstrate the importance."},
+                {id: 117, word: "sound", meaning: "건전한 / 타당한", trap: "소리처럼 들리다 외에 형용사로 '건전한/타당한 (a sound argument)'.", example: "Specific attributes of musical sounds."},
+                {id: 118, word: "fair", meaning: "상당한 / 꽤 많은", trap: "공정한·박람회 외에 a fair amount/number of (상당한).", example: "Our adult brains retain a preference for perpetuating good, fair behavior."},
+                {id: 119, word: "rough", meaning: "대략의 / 대강의", trap: "거친·험한 외에 a rough estimate (대략의 견적).", example: "Frequently made of rough wool or animal furs."},
+                {id: 120, word: "hold", meaning: "성립하다 / 유효하다 (참이다)", trap: "잡다·개최하다 외에 hold true처럼 이론이 성립하다/유효하다.", example: "He holds the distinction of being the first and only photographer."}
+            ],
+            5: [
+                {id: 121, word: "bear", meaning: "(증거·흔적을) 지니다 / 증언하다", trap: "곰·참다 외에 bear testimony/witness = 증언하다/보여 주다.", example: "Imagine if we could bear in mind that what we write down might not happen."},
+                {id: 122, word: "rest", meaning: "~에 달려 있다 / 근거하다 (rest on)", trap: "쉬다·나머지 외에 rest on/upon = ~에 근거/의존하다.", example: "Single-copy, or newsstand, sales account for the rest."},
+                {id: 123, word: "just", meaning: "정당한 / 공정한", trap: "단지/방금(부사)으로만 알아 형용사 '정당한/공정한'을 놓치지 말 것.", example: "The rules of baseball don't just regulate the behavior."},
+                {id: 124, word: "branch", meaning: "분야 / 부문", trap: "나뭇가지·지점 외에 branch of ~ = ~의 한 분야/부문.", example: "Other branches may sprout as some members have urgent phone calls."},
+                {id: 125, word: "meet", meaning: "(요구·조건·기준을) 충족하다 / 만족시키다", trap: "만나다만 알면 오역 - meet the requirements (요건을 충족하다).", example: "Here you'll meet the leaders in modern computer science."},
+                {id: 126, word: "run", meaning: "선거에 출마하다; 운영하다; (교통편이) 다니다", trap: "달리다만 알면 오역 - run for (출마하다), run a business (운영하다).", example: "The most powerful supercomputer cannot administer computations it takes to run."},
+                {id: 127, word: "desert", meaning: "버리다 / 저버리다 (deserted = 버려진)", trap: "사막(명사)만 알지 말고 동사로 '버리다/저버리다' 기억.", example: "Pollution from excess feed created huge barren underwater deserts."},
+                {id: 128, word: "wind", meaning: "감다, 구불구불 나아가다; 결국 ~하게 되다", trap: "바람(wind)과 발음·뜻 다름. 동사 wind(와인드)는 감다, wind up은 결국 ~로 끝나다.", example: "A stinging cold wind completes your misery."},
+                {id: 129, word: "lead", meaning: "납 (금속, led 발음)", trap: "이끌다(~로 이어지다) 외에 명사 lead(레드)는 금속 '납'.", example: "Changing political, social and religious landscapes will lead to the emergence."},
+                {id: 130, word: "well", meaning: "우물; (물·감정이) 솟아오르다 (well up)", trap: "잘/훌륭하게 외에 명사 well은 우물, 동사면 솟아오르다.", example: "The desire to do a job well for its own sake."},
+                {id: 131, word: "long", meaning: "간절히 바라다, 갈망하다 (long for)", trap: "긴/오랫동안 외에 동사로 long for (간절히 바라다).", example: "Keeping alert for long periods, something we are bad at."},
+                {id: 132, word: "patient", meaning: "참을성 있는, 인내심 있는", trap: "환자(명사)와 형용사 참을성 있는이 같은 철자.", example: "Treating patients in intensive care can require hundreds of small actions."},
+                {id: 133, word: "challenge", meaning: "이의를 제기하다 / 반박하다", trap: "도전하다 외에 통념·결정에 이의를 제기하다.", example: "A major challenge for map-makers is the depiction of hills and valleys."},
+                {id: 134, word: "object", meaning: "대상 / 목표", trap: "물체 명사 외에 대상/목표 및 동사 반대하다.", example: "How someone could see an object without seeing what color it is."},
+                {id: 135, word: "note", meaning: "음(音)", trap: "메모·주목하다 외에 note names = 음이름.", example: "Note that copyright covers the expression of an idea."},
+                {id: 136, word: "last", meaning: "지속되다 / 계속되다", trap: "마지막의·지난 외에 동사로 지속되다/계속되다.", example: "It had been more than ten years since she had last visited."},
+                {id: 137, word: "count", meaning: "중요하다", trap: "세다·계산하다 외에 count = matter (중요하다), count on (의존하다).", example: "We cannot count on people's benevolence or goodwill."},
+                {id: 138, word: "good", meaning: "상당한 / 꽤 많은", trap: "좋은/착한 외에 a good deal/number of = 상당한.", example: "Expansion of reasonably priced, good quality accommodation."},
+                {id: 139, word: "issue", meaning: "(공식적으로) 발행·발급하다; (출판물의) 호(號)", trap: "문제·쟁점 외에 동사로 발행·발급하다.", example: "Try to find ways to slice a large issue into smaller pieces."},
+                {id: 140, word: "kind", meaning: "친절한, 상냥한", trap: "종류(명사) 외에 형용사 kind는 친절한.", example: "A fascinating species of water flea exhibits a kind of flexibility."},
+                {id: 141, word: "fly", meaning: "파리 (곤충); (바지) 지퍼", trap: "날다(동사) 외에 명사 fly는 곤충 파리.", example: "If one bird startles and flies off, others will follow."},
+                {id: 142, word: "will", meaning: "의지", trap: "~할 것이다(조동사)·유언 외에 명사로 '의지'.", example: "They will even try to match gestures which they have some difficulty."},
+                {id: 143, word: "company", meaning: "함께 있음 / 일행", trap: "회사 외에 company retreat (회사 수련회) 등 일행 의미.", example: "One exercise in teamwork I do at a company retreat."},
+                {id: 144, word: "found", meaning: "설립하다 / 세우다", trap: "find(찾다)의 과거형(found)과 형태 혼동 주의 (설립하다 = found-founded).", example: "Exline and Lobel found that the perception of oneself as a target."},
+                {id: 145, word: "hard", meaning: "단단한", trap: "어려운·열심히 외에 물질이 '단단한' (a hard object).", example: "Classifying things together into groups is something we do all the time."},
+                {id: 146, word: "cell", meaning: "감방·작은 방; (배터리) 전지", trap: "세포·휴대폰 외에 cell = 감방, solar cell = 태양 전지.", example: "A cell is born as a twin when its mother cell divides."},
+                {id: 147, word: "table", meaning: "표 / 도표", trap: "탁자·식탁만 알면 도표 지문에서 막힘 (the table above).", example: "Mom was doing her office work at the kitchen table."},
+                {id: 148, word: "park", meaning: "주차하다 (동사)", trap: "공원(명사) 외에 동사로 park the car (차를 세우다).", example: "When entering a city park, people often imagine a sharp separation."},
+                {id: 149, word: "row", meaning: "노를 젓다; 말다툼, 소동 (rau 발음)", trap: "줄/열 외에 동사면 노를 젓다, 영국식 rau면 말다툼.", example: "Hannah was seated in the fifth row, hallway side."},
+                {id: 150, word: "star", meaning: "주연을 맡다 (동사); 별표(★)", trap: "별·스타(유명인)가 기본, 동사 star는 주연을 맡다.", example: "In his childhood, he grew up on a farm, studying the stars in the sky."}
+            ],
+            6: [
+                {id: 151, word: "flexible", meaning: "유연한, 융통성 있는", trap: "'잘 휘는' 물리적 뜻보다 상황 따라 행동·사고를 바꾸는 융통성이 핵심.", example: "They had flexible behavior, or the ability to change as circumstances changed."},
+                {id: 152, word: "information", meaning: "정보", trap: "셀 수 없는 명사라 informations / an information 금지. 늘 단수 취급.", example: "Those countries that possess the highest-quality information."},
+                {id: 153, word: "social", meaning: "사회적인, 사회의", trap: "society의 형용사. social skills = 사회적 기술, social media.", example: "Innate human disposition to respond differentially to social stimuli."},
+                {id: 154, word: "human", meaning: "인간의, 인간", trap: "형용사와 명사 둘 다 쓰임. human being = 인간.", example: "At no point in human history have we used more elements."},
+                {id: 155, word: "example", meaning: "예, 사례, 보기", trap: "for example = 예를 들어. set an example = 모범을 보이다.", example: "The word dog, for example, groups together a certain class of animals."},
+                {id: 156, word: "different", meaning: "다른, 다양한", trap: "different from (~와 다른) 전치사 주의. 복수명사 앞선 다양한.", example: "Encounter junctions with many different pathways leading into the distance."},
+                {id: 157, word: "culture", meaning: "문화", trap: "주로 문화, 과학 지문에서는 배양(세균 등) 뜻으로도 출제.", example: "Support the dominant culture and serve as a means for its reproduction."},
+                {id: 158, word: "technology", meaning: "기술, (과학)기술", trap: "technique(개별 기법)와 구별. technology = 과학 기반 기술 전반.", example: "Thanks to newly developed neuroimaging technology."},
+                {id: 159, word: "energy", meaning: "에너지, 힘, 활력", trap: "물리적 에너지뿐 아니라 사람의 기운·활력 뜻으로도 쓰임.", example: "Putting all of her energy into her last steps of the running race."},
+                {id: 160, word: "relationship", meaning: "관계, 관련성", trap: "relationship between A and B. 개념·요소 간 관련성도 뜻함.", example: "He had a close relationship with Leonardo da Vinci."},
+                {id: 161, word: "connection", meaning: "연결, 관련(성), 연관", trap: "connection between A and B. in connection with ~와 관련하여.", example: "High-activity synaptic connections are stabilized and strengthened."},
+                {id: 162, word: "emotion", meaning: "감정, 정서", trap: "추상명사. 형용사 emotional(감정적인)과 구분.", example: "Remembering how negative emotions can drag you down."},
+                {id: 163, word: "reaction", meaning: "반응", trap: "re-(되받아) + action. allergic/chemical reaction 조합 익히기.", example: "Your reaction to your cat jumping onto your lap."},
+                {id: 164, word: "purpose", meaning: "목적, 용도", trap: "for the purpose of ~. on purpose = 일부러(의도적으로).", example: "Speculations about the meaning and purpose of prehistoric art."},
+                {id: 165, word: "goal", meaning: "목표, 목적", trap: "achieve/reach a goal = 목표를 이루다.", example: "Motivation to achieve one's personal goal."},
+                {id: 166, word: "ability", meaning: "능력, 재능", trap: "ability to V = ~하는 능력. 반대는 inability.", example: "Unique in its ability to expand its functionality."},
+                {id: 167, word: "environmental", meaning: "환경의, 환경과 관련된", trap: "environmental problems / hazards처럼 명사 앞에서 자주 쓰여.", example: "Invasions of natural communities rated as global-scale environmental problems."},
+                {id: 168, word: "argument", meaning: "논거, 주장; 논쟁, 말다툼", trap: "말다툼·논쟁만 알면 함정. '논거·주장'으로 지문에 더 자주 나옴.", example: "It has also become a tired and played-out argument."},
+                {id: 169, word: "response", meaning: "반응; 응답, 답변, 회신", trap: "반응뿐 아니라 편지·요청에 대한 답변·회신 뜻으로도 자주 나옴.", example: "People vary a great deal both in the intensity of their response."},
+                {id: 170, word: "inevitable", meaning: "불가피한, 피할 수 없는, 필연적인", trap: "avoid(피하다)에서 유래. 동사 avoidable의 반대말.", example: "Competition presents an inevitable conflict."},
+                {id: 171, word: "instinct", meaning: "본능, 직감", trap: "생각하기 전에 저절로 나오는 반응. by instinct (본능적으로).", example: "Living by instinct and emotion all the time."},
+                {id: 172, word: "nurture", meaning: "양육, (후천적) 환경·보살핌", trap: "nature(타고난 천성) vs nurture(후천적 양육) 대비로 출제.", example: "The interaction between nature and nurture is highly complex."},
+                {id: 173, word: "imply", meaning: "암시하다, 의미하다, 전제로 하다", trap: "겉으로 말 안 해도 속뜻으로 담고 있음.", example: "This implies that sufficient fresh snow must accumulate."},
+                {id: 174, word: "assumption", meaning: "가정, 추정, (당연시하는) 전제", trap: "증거 없이 그렇다고 믿어버리는 전제.", example: "He must make a series of assumptions about what they will understand."},
+                {id: 175, word: "accumulate", meaning: "축적하다, 모으다, 쌓이다", trap: "조금씩 쌓여 모이다. 타동사와 자동사 둘 다 쓰임.", example: "Treasure hunters have accumulated valuable historical artifacts."},
+                {id: 176, word: "sensation", meaning: "감각, (몸으로 느끼는) 느낌", trap: "sense의 명사형으로 몸의 느낌. 큰 화제거리(센세이션) 뜻도 있음.", example: "Continuous time-varying patterns of touch sensation."},
+                {id: 177, word: "explicit", meaning: "명시적인, 분명하게 드러낸, 노골적인", trap: "implicit(암묵적인)의 반대말로 대놓고 분명히 말한.", example: "Although not the explicit goal, the best science can be seen as refining."},
+                {id: 178, word: "vulnerable", meaning: "취약한, 상처받기 쉬운, 약한", trap: "방어력이 약해 쉽게 상처받는. vulnerable to (~에 취약한).", example: "While afloat, it is uniquely vulnerable, moving slowly."},
+                {id: 179, word: "suppress", meaning: "억누르다, 억압하다, 참다/막다", trap: "밖으로 나오려는 것을 눌러 막다. 감정을 참거나 진압할 때 쓰임.", example: "The only way to prevent this effect is to suppress such representations."},
+                {id: 180, word: "justification", meaning: "정당화, 타당한 이유, 명분", trap: "어떤 행동·주장을 옳다고 뒷받침하는 근거. justify와 묶어 기억.", example: "Rhetorical acts as assertion, justification, judgment, and conviction."}
+            ],
+            7: [
+                {id: 181, word: "intuition", meaning: "직관 (논리적 분석 없이 바로 느껴 아는 것)", trap: "수능에선 intuition vs data/analysis(자료·분석) 대비로 자주 등장.", example: "Trusting our intuition to make the choice often ends up with suboptimal choice."},
+                {id: 182, word: "sophisticated", meaning: "정교한, 고도로 발달한; 세련된", trap: "세련된만 알면 함정. technology-system이 정교한·고도화된 뜻으로 빈출.", example: "From alarm signals to sophisticated statements."},
+                {id: 183, word: "insufficient", meaning: "불충분한, 부족한", trap: "in(부정) + sufficient(충분한). be insufficient to do.", example: "Formal training programs are insufficient to address shifting needs."},
+                {id: 184, word: "subsequent", meaning: "그 다음의, 이후의, 뒤이은", trap: "시간상 뒤에 오는 subsequent works (이후 작품).", example: "Reappear in subsequent works than in genre fiction."},
+                {id: 185, word: "integral", meaning: "필수적인, 없어서는 안 될, 핵심인", trap: "integral part of = ~의 필수 구성 요소. 수학 적분보다 필수적인.", example: "Saw the sale of transport services as being integral to a much wider need."},
+                {id: 186, word: "impose", meaning: "(규칙·부담 등을) 부과하다, 강요하다", trap: "impose A on B = B에 A를 부과·강요하다.", example: "A score of music imposes rules, but it also creates a pattern."},
+                {id: 187, word: "facilitate", meaning: "(일을) 쉽게 하다, 촉진하다, 가능하게 하다", trap: "facile(쉬운)에서 유래. 어떤 과정을 순조롭게 돕다.", example: "Facilitated the growth of locally based restaurants."},
+                {id: 188, word: "acknowledge", meaning: "(사실임을) 인정하다, 인지하다", trap: "인정하다가 수능 1순위. acknowledge that 절.", example: "Conservationists acknowledge change but try to manage it."},
+                {id: 189, word: "situational", meaning: "상황에 따른, 상황적인", trap: "정해진 규칙이 아니라 그때그때 상황에 따라 달라지는 뉘앙스.", example: "Help illustrate the application of situational ethics."},
+                {id: 190, word: "deliberate", meaning: "의도적인, 고의의; 신중한", trap: "형용사는 우연이 아닌 의도적인/신중한, 동사는 심사숙고하다.", example: "By treating these as deliberate design choices."},
+                {id: 191, word: "infinite", meaning: "무한한, 끝없는", trap: "fin(끝)에 부정 접두사 in-이 붙어 끝이 없는. finite의 반대.", example: "You imagined that adults had infinite power."},
+                {id: 192, word: "rigid", meaning: "경직된, 융통성 없는; 뻣뻣한", trap: "물리적으로 뻣뻣한에서 추상적으로 규칙·사고가 융통성 없는으로 확장.", example: "The rigid social control required to hold an empire together."},
+                {id: 193, word: "comprehend", meaning: "(완전히) 이해하다, 파악하다", trap: "understand보다 격식 있는 머리로 완전히 파악하다.", example: "Scientists still struggle to comprehend why glass behaves the way it does."},
+                {id: 194, word: "constraint", meaning: "제약, 제한", trap: "마음대로 못 하게 묶어 두는 한계. time constraints.", example: "Assess to a large extent the financial constraints that other actors have."},
+                {id: 195, word: "subtle", meaning: "미묘한, 감지하기 힘든, 교묘한", trap: "obvious(명백한)의 반대로 눈에 잘 안 띄는 미묘한.", example: "Notice the obvious aspects while missing the more subtle aspects."},
+                {id: 196, word: "static", meaning: "고정된, 정적인, 변화 없는", trap: "dynamic(역동적인)의 반대. 명사론 잡음 뜻도 있음.", example: "It is fluid rather than static."},
+                {id: 197, word: "advocate", meaning: "옹호하다, 지지하다; 옹호자", trap: "advocate for = ~을 옹호/지지하다. 동사·명사 둘 다 쓰임.", example: "With its advocates slipping into scientism."},
+                {id: 198, word: "assert", meaning: "주장하다, 단언하다; (권리를) 행사하다", trap: "assert control/rights처럼 쓰이면 권리·힘을 행사하다.", example: "The collector asserts his belief in the future presence of the work."},
+                {id: 199, word: "abundance", meaning: "풍부함, 많음", trap: "an abundance of = 많은. 부족(scarcity)의 반대.", example: "Conduct shows an abundance of the motivation required."},
+                {id: 200, word: "quantitative", meaning: "양적인, 정량적인 (수치로 측정되는)", trap: "quantity(양)에서 유래. qualitative(질적인)와 짝으로 대비됨.", example: "Issues that can be expressed in quantitative, measurable units."}
+            ],
+            8: [
+                {id: 201, word: "primitive", meaning: "원시의, 원시적인; 초기의, 단순한", trap: "원시 시대뿐 아니라 발달이 덜 된, 단순한이란 뜻으로도 많이 쓰임.", example: "Vital concern to the whole primitive community."},
+                {id: 202, word: "breakthrough", meaning: "돌파구, 획기적인 발전/발견", trap: "break through(뚫고 나가다)에서 온 명사. 막힌 문제를 뚫는 큰 진전.", example: "Yet it was a breakthrough in human evolution."},
+                {id: 203, word: "concrete", meaning: "구체적인, 명확한, 실재하는", trap: "콘크리트로만 알면 함정. abstract(추상적인)의 반대인 구체적인.", example: "Public spaces include parks, concrete plazas, sidewalks."},
+                {id: 204, word: "align", meaning: "(~와) 일치시키다, 나란히 하다", trap: "align A with B = A를 B에 맞추다. be aligned with.", example: "Objectives of the architects are not aligned with wellbeing."},
+                {id: 205, word: "foster", meaning: "(성장·발전을) 촉진하다, 길러주다", trap: "promote/encourage와 같은 촉진하다. 추상명사와 짝지어 나옴.", example: "Literature can be helpful because of what it fosters in readers."},
+                {id: 206, word: "reluctant", meaning: "꺼리는, 마지못해 하는", trap: "be reluctant to V = 마지못해/내키지 않아 하다.", example: "People are reluctant to believe in quickfixes."},
+                {id: 207, word: "trait", meaning: "특성, 특징, (성격적) 기질", trap: "특히 사람의 성격적 특성·기질을 뜻함. 유전 맥락에선 형질.", example: "With a unique combination of traits, the human hand shaped history."},
+                {id: 208, word: "underlying", meaning: "근본적인, 기저에 깔린, 밑바탕이 되는", trap: "under(아래) + lying(놓인) -> 밑에 깔린 근본적인.", example: "The invisible, underlying order of things."},
+                {id: 209, word: "consensus", meaning: "합의, 의견 일치 (다수가 공유하는 견해)", trap: "con(함께) + sens(느끼다) -> 다 같이 같은 생각.", example: "This consensus is all but certain to be displaced."},
+                {id: 210, word: "prevail", meaning: "우세하다, 만연하다, 널리 퍼져 있다", trap: "그 지역/시대에 가장 흔하고 지배적인 상태.", example: "Subject to prevailing modes of perception."},
+                {id: 211, word: "manipulation", meaning: "조작, (사람·정보를 교묘히) 다룸·조종", trap: "나쁜 조작뿐 아니라 실험에서 변인을 다룸이라는 중립적 뜻도 있음.", example: "Carry the potential for manipulation."},
+                {id: 212, word: "paradox", meaning: "역설, 모순 (말이 안 되는 듯하지만 참인 상황)", trap: "겉보기엔 서로 안 맞는 두 사실이 동시에 참인 상황.", example: "This creates a paradox that rational models fail to represent."},
+                {id: 213, word: "validity", meaning: "타당성, (근거가) 믿을 만함·유효함", trap: "valid(타당한)의 명사형. evidence를 evaluate for validity.", example: "Evaluate multiple forms of evidence for validity."},
+                {id: 214, word: "aggregate", meaning: "총계의, 합계의, 집합적인; 총량", trap: "경제 지문 핵심어. aggregate supply/demand (총공급/총수요).", example: "At the aggregate level, improving national energy efficiency."},
+                {id: 215, word: "paradigm", meaning: "패러다임, (한 시대·분야의) 사고의 틀", trap: "사람들이 당연하게 공유하는 틀/관점. 과학철학 지문 등장.", example: "One role of a paradigm is to enable scientists to work successfully."},
+                {id: 216, word: "premise", meaning: "전제 (어떤 주장의 바탕이 되는 가정)", trap: "논리의 출발점인 전제. 복수 premises는 건물 부지 뜻이니 구분.", example: "Geography starts from the premise that it matters where something takes place."},
+                {id: 217, word: "cognition", meaning: "인지, 인식 (생각하고 아는 정신 작용)", trap: "cognitive(인지의)의 명사. 심리·뇌과학 지문 핵심어.", example: "Movement within the animal cognition community."},
+                {id: 218, word: "nuance", meaning: "미묘한 차이, 뉘앙스", trap: "눈에 확 안 띄는 섬세하고 미묘한 차이/의미.", example: "Scripts with complex language may require several additional readings."},
+                {id: 219, word: "illuminate", meaning: "밝히다, 분명히 설명하다; 비추다", trap: "원뜻은 빛을 비추다지만 수능에선 이해를 밝혀 준다로 비유적 쓰임.", example: "Principle of using light to reveal or illuminate objects."},
+                {id: 220, word: "offset", meaning: "상쇄하다, 벌충하다, 상쇄되다", trap: "한쪽의 이득/손실을 다른 쪽이 비겨서 없애다.", example: "Sufficient fresh snow must accumulate to offset melting during summer."}
+            ],
+            9: [
+                {id: 221, word: "affirm", meaning: "단언하다, 확언하다; 긍정하다", trap: "확신을 가지고 강하게 주장/긍정하다. deny(부정하다)의 반대.", example: "Courageously affirms not only his aesthetic judgment."},
+                {id: 222, word: "fallacy", meaning: "(논리적) 오류, 그릇된 생각", trap: "겉보기엔 맞는 것 같지만 실제로는 틀린 추론 (sunk cost fallacy).", example: "There is a principle known as the sunk cost fallacy."},
+                {id: 223, word: "elaborate", meaning: "정교한, 공들인, 복잡하게 꾸민", trap: "형용사면 정교한, 동사면 자세히 설명하다.", example: "Fashion began moving toward styles which were more elaborate."},
+                {id: 224, word: "plausible", meaning: "그럴듯한, 타당해 보이는, 설득력 있는", trap: "실제 맞다는 게 아니라 겉보기에 타당하다는 뉘앙스.", example: "Consider whether other plausible options are being ignored."},
+                {id: 225, word: "resilient", meaning: "회복력 있는, (어려움에) 잘 견디는", trap: "힘든 일을 겪어도 다시 튕겨 올라오는 회복력.", example: "Bring about more resilient and resistant plant species."},
+                {id: 226, word: "correlate", meaning: "서로 관련[상관관계]이 있다", trap: "correlate with ~. 명사 correlation(상관관계).", example: "This unloading time is correlated with the colony's overall need."},
+                {id: 227, word: "conceive", meaning: "(생각·계획을) 마음속에 품다, 구상하다", trap: "conceive of ~로 ~를 상상·생각해 내다.", example: "Conceive of measures that tap into what people are thinking."},
+                {id: 228, word: "embody", meaning: "구현하다, (생각·특징을) 담다", trap: "body(몸)가 들어가 추상적 생각을 형태처럼 담는다.", example: "Representation of nature that parks are meant to embody."},
+                {id: 229, word: "presume", meaning: "(근거를 갖고) 추정하다, 간주하다", trap: "assume보다 근거가 있어 그렇게 추정한다는 뉘앙스.", example: "Presumed by soft-path engineers to be ecologically important."},
+                {id: 230, word: "manifest", meaning: "(분명히) 드러나다, 나타내다; 명백한", trap: "manifest itself = 저절로 모습을 드러내다.", example: "Think about or visualize something to manifest it."},
+                {id: 231, word: "development", meaning: "발달, 성장, 개발", trap: "develop의 명사형. R&D, child development 등 문맥 따라 다름.", example: "Research and development for seed improvement."},
+                {id: 232, word: "media", meaning: "매체, 미디어, 언론", trap: "원래 medium의 복수형. 대중매체·언론 뜻으로 자주 쓰임.", example: "Diaries were central media through which subjects could be constructed."},
+                {id: 233, word: "physical", meaning: "신체의, 육체의; 물리적인, 물질적인", trap: "신체의로만 외우면 함정. 물리적·물질적 실체 뜻이 빈출.", example: "Think of a clock as a physical thing, like an alarm clock."},
+                {id: 234, word: "scientific", meaning: "과학의, 과학적인", trap: "science의 형용사. scientific method (체계적·객관적 뉘앙스).", example: "Follow the scientific method to perform studies."},
+                {id: 235, word: "factor", meaning: "요인, 요소", trap: "결과를 만드는 원인 요소. element와 비슷하나 영향력 뉘앙스.", example: "Several factors critical to bringing about stable institutional solutions."},
+                {id: 236, word: "aspect", meaning: "측면, 양상, 면", trap: "한 사물·상황의 여러 면·측면 중 하나.", example: "Possible to see certain aspects of an object and not others."},
+                {id: 237, word: "concept", meaning: "개념", trap: "머릿속 추상적 개념·발상. conceptual(개념적인).", example: "Townes and his co-researcher proposed the concept of the laser."},
+                {id: 238, word: "approach", meaning: "다가가다, 접근하다; 접근법, 방식", trap: "명사 접근법·방식(an approach to ~)으로 더 자주 나옴.", example: "Then, a librarian approached and asked."},
+                {id: 239, word: "context", meaning: "맥락, 문맥; 상황, 전후 사정", trap: "단순 맥락을 넘어 상황·전후 사정까지. in context.", example: "Infer from my intonation, or the context in which we are talking."},
+                {id: 240, word: "feature", meaning: "특징, 특색; ~을 특징으로 하다", trap: "명사 특징 외에 동사로 주연으로 다루다 뜻도 있음.", example: "Parks typically have trees, grass, and other plants as their central features."},
+                {id: 241, word: "principle", meaning: "원칙, 원리", trap: "principal(교장·주요한)과 철자 혼동 주의.", example: "When a person accepts a moral principle."},
+                {id: 242, word: "mechanism", meaning: "작동 원리, 기제; 기계 장치", trap: "결과를 만들어내는 작동 원리로 추상적 쓰임.", example: "Uncovering the mechanisms that produced the phenomenon."},
+                {id: 243, word: "function", meaning: "기능, 작용, 역할; 기능하다", trap: "function as ~ (~로서 기능하다/역할을 하다).", example: "Its function is to provide an arena in which males display."},
+                {id: 244, word: "structure", meaning: "구조; 건축물, 구조물; 구조화하다", trap: "추상적 구조 외에 구체적 건축물·구조물이라는 뜻도 함정.", example: "Even though all of our brains contain the same basic structures."},
+                {id: 245, word: "pattern", meaning: "(규칙적) 양상, 양식, 경향; 무늬", trap: "무늬보다 규칙적 양상·경향의 뜻으로 자주 쓰임.", example: "The central concerns of mathematics are not numbers, but patterns."},
+                {id: 246, word: "perception", meaning: "지각, 인식", trap: "감각적 지각과 인지적 인식·견해 두 뜻 모두 빈출.", example: "Perception of oneself as a target for upward social comparison."},
+                {id: 247, word: "enhance", meaning: "향상시키다, 높이다", trap: "이미 있는 것을 더 높인다는 뉘앙스 (enhance performance).", example: "Serves to enhance the quality of our professional career."},
+                {id: 248, word: "interpret", meaning: "해석하다, 이해하다", trap: "해석하다와 통역하다 두 뜻. interpretation.", example: "You interpret what it means, and that interpretation triggers a response."},
+                {id: 249, word: "collective", meaning: "집단의, 공동의", trap: "collective memory(집단 기억). individual의 반의어.", example: "Constructed a social narrative and a collective memory."},
+                {id: 250, word: "incentive", meaning: "유인책, 동기, 장려(책)", trap: "~하도록 만드는 동기/보상. market incentive.", example: "Typically face market incentives that provide financial rewards."}
+            ],
+            10: [
+                {id: 251, word: "hypothesis", meaning: "가설", trap: "복수형 hypotheses. 과학·실험 지문 핵심어.", example: "An experiment that successfully proves a hypothesis is a measurement."},
+                {id: 252, word: "notion", meaning: "개념, 생각, 관념", trap: "idea와 동의어. the notion that ~ (동격절).", example: "Begin to live with the notion that they are recognized by the job."},
+                {id: 253, word: "indifferent", meaning: "무관심한, 개의치 않는", trap: "different와 혼동 주의. be indifferent to (~에 무관심한).", example: "If everyone else is calm and indifferent."},
+                {id: 254, word: "emerge", meaning: "나타나다, 생겨나다, 부상하다", trap: "숨어 있다 나타나다. emerge as (~로 부상하다).", example: "Norms emerge in groups as a result of people conforming."},
+                {id: 255, word: "inherent", meaning: "내재된, 본질적인, 고유한", trap: "inherent in (~에 내재하는). 본래부터 갖고 있는.", example: "It is the inherent ambiguity and adaptability of language."},
+                {id: 256, word: "infer", meaning: "추론하다, 추측하다", trap: "infer A from B. imply와 방향이 반대 (화자는 imply, 청자는 infer).", example: "Perhaps you infer from my intonation that I mean morally bad."},
+                {id: 257, word: "compensate", meaning: "보상하다, 보충하다, 상쇄하다", trap: "compensate for (~을 보상/보충하다).", example: "To compensate for this rather obvious defect."},
+                {id: 258, word: "bias", meaning: "편향, 편견, 치우침", trap: "통계·실험 맥락에서 한쪽으로 치우침.", example: "This kind of error is called bias."},
+                {id: 259, word: "abstract", meaning: "추상적인", trap: "concrete(구체적인)의 반의어. 명사론 초록/요약.", example: "Moving away from direct representation to the abstract painting."},
+                {id: 260, word: "innate", meaning: "타고난, 선천적인", trap: "inborn과 동의어. acquired/learned의 반대.", example: "Innate human disposition to respond differentially."},
+                {id: 261, word: "crucial", meaning: "결정적인, 중대한", trap: "important보다 강한 없어서는 안 될 뉘앙스.", example: "The crucial factor in the success of the suffragette movement."},
+                {id: 262, word: "autonomy", meaning: "자율성, 자주성", trap: "철학·윤리·AI 지문에서 개인의 자기결정권 의미.", example: "Aligned with the wellbeing or autonomy of the individual."},
+                {id: 263, word: "reinforce", meaning: "강화하다, 보강하다", trap: "force(힘)가 들어가 다시 단단하게 하다. strengthen 동의어.", example: "Repeatedly recounting humorous incidents reinforces unity."},
+                {id: 264, word: "theoretical", meaning: "이론적인, 이론상의", trap: "empirical(경험적)과 대비되어 머릿속 이론일 뿐인 뉘앙스.", example: "Other than as a theoretical construct."},
+                {id: 265, word: "analogy", meaning: "유사점, 유추, 비유", trap: "analogy between A and B. 논증 지문 전환 신호.", example: "There's a direct analogy between the fovea and your fingertips."},
+                {id: 266, word: "derive", meaning: "끌어내다, 얻다, 유래하다", trap: "be derived from (~에서 비롯되다).", example: "Our picture of any period of history is derived from a multitude of sources."},
+                {id: 267, word: "prior", meaning: "이전의, 사전의", trap: "prior to = before (~에 앞서). priority(우선순위).", example: "Prior to file-sharing services, music albums landed exclusively."},
+                {id: 268, word: "empirical", meaning: "경험적인, 실증적인", trap: "관찰·실험으로 증명된 뜻. theoretical과 대비.", example: "Organize and systematize our knowledge of the empirical world."},
+                {id: 269, word: "perceive", meaning: "인식하다, 지각하다, (~라고) 여기다", trap: "perceive A as B 구문이 핵심.", example: "Simply perceiving ourselves as people who do good deeds."},
+                {id: 270, word: "discern", meaning: "식별하다, 분간하다, 알아차리다", trap: "미세한 차이를 가려내는 고급 어휘.", example: "We can discern different colors, but we can give a precise number."},
+                {id: 271, word: "simultaneous", meaning: "동시의, 동시에 일어나는", trap: "부사형 simultaneously가 더 자주 출제.", example: "The simultaneous pursuit of cooperation and competition."},
+                {id: 272, word: "enthusiastic", meaning: "열정적인, 열광적인", trap: "be enthusiastic about (~에 열광하다). 전치사 about 주의.", example: "We intentionally sat enthusiastic people to the sides and rear."},
+                {id: 273, word: "rationale", meaning: "이유, 근거, 논리적 근거", trap: "rational(이성적인)과 철자가 비슷하나 명사 합당한 이유.", example: "Choosing similar friends can have a rationale."},
+                {id: 274, word: "counteract", meaning: "대응하다, 거스르다, 상쇄하다", trap: "counter(반대) + act = 반대로 작용해 효과를 줄이다.", example: "Social sharing may in this way help to counteract some natural tendency."},
+                {id: 275, word: "constrain", meaning: "제약하다, 제한하다", trap: "restrict와 유사. constrain A from -ing.", example: "Legal rules that establish these roles constrain the behavior."},
+                {id: 276, word: "deficit", meaning: "부족, 결핍, 적자", trap: "surplus(잉여)의 반대. deficit in (~의 부족).", example: "Adaptively adjust their eating behavior in response to deficits in water."},
+                {id: 277, word: "entail", meaning: "수반하다, 필요로 하다", trap: "A가 B를 필연적으로 동반/요구하다.", example: "Some discoveries seem to entail numerous phases and discoverers."},
+                {id: 278, word: "persuasion", meaning: "설득", trap: "동사 persuade(설득하다), persuasive(설득력 있는)와 세트.", example: "After some persuasion, Mia reluctantly agreed."},
+                {id: 279, word: "endure", meaning: "견디다, 참다; 지속되다", trap: "enduring은 지속되는/오래가는(=lasting) 뜻으로도 빈출.", example: "Crucially important for those enduring hardship."},
+                {id: 280, word: "inference", meaning: "추론, 추리", trap: "동사 infer의 명사형. 과학적 사고 맥락에 등장.", example: "Replacing these with observation and inference."},
+                {id: 281, word: "ideology", meaning: "이념, 이데올로기", trap: "객관적으로 보이지만 사실은 특정 이념을 담는다는 비판적 맥락.", example: "Makes maps such powerful carriers of ideology."},
+                {id: 282, word: "hierarchical", meaning: "위계적인, 계층적인", trap: "명사 hierarchy(위계질서)의 형용사형.", example: "As much on the historical as hierarchical level."},
+                {id: 283, word: "necessitate", meaning: "필요로 하다, 불가피하게 만들다", trap: "necessary의 동사형. require보다 격식 있고 강한 표현.", example: "Each of these errors does not necessitate the others."},
+                {id: 284, word: "framework", meaning: "틀, 체계, 뼈대", trap: "법적/이론적 체계·틀의 추상적 의미 (legal framework).", example: "Establish and maintain an effective legal framework."},
+                {id: 285, word: "magnitude", meaning: "(큰) 규모, 크기, 중대함", trap: "결과가 초래하는 엄청난 규모·중대함.", example: "A defining element of catastrophes is the magnitude."},
+                {id: 286, word: "convey", meaning: "(생각·감정·의미를) 전달하다", trap: "물건을 운반하다보다 의미·생각을 전달하다로 빈출.", example: "More than half of a speaker's meaning is conveyed nonverbally."},
+                {id: 287, word: "attain", meaning: "이루다, 달성하다 (목표·수준에 도달)", trap: "노력 끝에 목표·수준에 도달하다 (attain a goal).", example: "Attain higher levels of happiness."},
+                {id: 288, word: "sustain", meaning: "지탱하다, 유지하다; 입다", trap: "핵심은 지탱·유지. sustain an injury (부상을 입다)도 나옴.", example: "Institutions which sustain them increasingly depend on funding."},
+                {id: 289, word: "trigger", meaning: "유발하다, 촉발하다", trap: "방어력이 어원이지만 수능에선 유발하다(trigger a response).", example: "Interpretation triggers an emotional response."},
+                {id: 290, word: "depict", meaning: "(그림·글로) 묘사하다, 그리다", trap: "de(아래로) + pict(그리다) -> 그려 내다.", example: "The self-portrait showed to others the status of the person depicted."}
+            ]
+        };
+
+        // State variables
+        let currentDay = 1;
+        let currentCardIndex = 0;
+        let isCardFlipped = false;
+        let memorizedWords = JSON.parse(localStorage.getItem('vocab_memorized_mint_v1') || '{}');
+        
+        let quizQuestions = [];
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        // Initialize application on load
+        window.onload = function() {
+            populateSelects();
+            renderDashboard();
+            updateTotalProgress();
+        };
+
+        function populateSelects() {
+            const cardSelect = document.getElementById('flashcard-day-select');
+            const quizSelect = document.getElementById('quiz-day-select');
+            cardSelect.innerHTML = '';
+            quizSelect.innerHTML = '';
+
+            for (let i = 1; i <= 10; i++) {
+                const title = i <= 5 ? `Day ${i < 10 ? '0'+i : i} (다의어 편)` : `Day ${i < 10 ? '0'+i : i} (필수어 편)`;
+                cardSelect.innerHTML += `<option value="${i}">${title}</option>`;
+                quizSelect.innerHTML += `<option value="${i}">${title}</option>`;
+            }
+        }
+
+        // View Switcher with sleek transitions
+        function switchView(viewName) {
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-flashcard').classList.add('hidden');
+            document.getElementById('view-quiz').classList.add('hidden');
+
+            document.getElementById('nav-dashboard').className = "px-5 py-2 rounded-xl text-sm font-semibold transition text-slate-600 hover:text-teal-700 hover:bg-white/60";
+            document.getElementById('nav-flashcard').className = "px-5 py-2 rounded-xl text-sm font-semibold transition text-slate-600 hover:text-teal-700 hover:bg-white/60";
+            document.getElementById('nav-quiz').className = "px-5 py-2 rounded-xl text-sm font-semibold transition text-slate-600 hover:text-teal-700 hover:bg-white/60";
+
+            if (viewName === 'dashboard') {
+                document.getElementById('view-dashboard').classList.remove('hidden');
+                document.getElementById('nav-dashboard').className = "px-5 py-2 rounded-xl text-sm font-semibold transition bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-md shadow-teal-500/25";
+                renderDashboard();
+                updateTotalProgress();
+            } else if (viewName === 'flashcard') {
+                document.getElementById('view-flashcard').classList.remove('hidden');
+                document.getElementById('nav-flashcard').className = "px-5 py-2 rounded-xl text-sm font-semibold transition bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-md shadow-teal-500/25";
+                document.getElementById('flashcard-day-select').value = currentDay;
+                loadFlashcard();
+            } else if (viewName === 'quiz') {
+                document.getElementById('view-quiz').classList.remove('hidden');
+                document.getElementById('nav-quiz').className = "px-5 py-2 rounded-xl text-sm font-semibold transition bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-md shadow-teal-500/25";
+                document.getElementById('quiz-day-select').value = currentDay;
+                startQuiz(currentDay);
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Render Dashboard Cards
+        function renderDashboard() {
+            const grid = document.getElementById('day-grid');
+            grid.innerHTML = '';
+
+            for (let day = 1; day <= 10; day++) {
+                const words = vocabData[day] || [];
+                const memorizedCount = words.filter(w => memorizedWords[`${day}-${w.id}`]).length;
+                const percentage = Math.round((memorizedCount / words.length) * 100);
+                const isPolysemy = day <= 5;
+
+                const card = document.createElement('div');
+                card.className = "glass-panel p-6 rounded-3xl hover:border-teal-400 transition-all duration-300 flex flex-col justify-between space-y-5 group shadow-xl hover:-translate-y-1 bg-white";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-black px-3 py-1 bg-teal-50 text-teal-700 rounded-xl border border-teal-200">DAY ${day < 10 ? '0' + day : day}</span>
+                            <span class="text-xs font-semibold text-slate-500">${words.length}단어</span>
+                        </div>
+                        <h4 class="font-extrabold text-slate-900 mt-4 text-lg group-hover:text-teal-600 transition">${isPolysemy ? '다의어 함정 마스터' : '필수 핵심어 정복'}</h4>
+                        <p class="text-xs text-slate-500 mt-1 font-medium">${isPolysemy ? '아는 단어의 함정 피하기' : '유추 안 되는 핵심 어휘'}</p>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-bold text-slate-500">
+                            <span>암기율</span>
+                            <span class="text-teal-600">${memorizedCount} / ${words.length} (${percentage}%)</span>
+                        </div>
+                        <div class="w-full bg-teal-50 h-2.5 rounded-full overflow-hidden p-0.5 border border-teal-200">
+                            <div class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5 pt-2 border-t border-teal-100">
+                        <button onclick="openFlashcard(${day})" class="w-full bg-teal-50 hover:bg-teal-600 text-teal-700 hover:text-white font-bold py-2.5 rounded-xl text-xs transition border border-teal-200 flex items-center justify-center space-x-1.5 shadow-sm">
+                            <i class="fa-solid fa-clone"></i> <span>암기하기</span>
+                        </button>
+                        <button onclick="openQuiz(${day})" class="w-full bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white font-bold py-2.5 rounded-xl text-xs transition border border-emerald-200 flex items-center justify-center space-x-1.5 shadow-sm">
+                            <i class="fa-solid fa-brain"></i> <span>퀴즈</span>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            }
+        }
+
+        function updateTotalProgress() {
+            let totalWords = 0;
+            let totalMemorized = 0;
+            for (let day = 1; day <= 10; day++) {
+                const words = vocabData[day] || [];
+                totalWords += words.length;
+                totalMemorized += words.filter(w => memorizedWords[`${day}-${w.id}`]).length;
+            }
+            const percent = totalWords > 0 ? Math.round((totalMemorized / totalWords) * 100) : 0;
+            document.getElementById('total-progress-text').innerText = `${totalMemorized} / ${totalWords}`;
+            document.getElementById('total-progress-bar').style.width = `${percent}%`;
+            document.getElementById('total-progress-percent').innerText = `${percent}% 마스터 완료`;
+        }
+
+        // Flashcard logic
+        function openFlashcard(day) {
+            currentDay = day;
+            currentCardIndex = 0;
+            isCardFlipped = false;
+            switchView('flashcard');
+        }
+
+        function changeFlashcardDay(val) {
+            currentDay = parseInt(val);
+            currentCardIndex = 0;
+            isCardFlipped = false;
+            loadFlashcard();
+        }
+
+        function loadFlashcard() {
+            const words = vocabData[currentDay];
+            const wordObj = words[currentCardIndex];
+
+            document.getElementById('card-counter').innerText = `${currentCardIndex + 1} / ${words.length}`;
+            document.getElementById('card-num').innerText = `#${wordObj.id < 10 ? '00' + wordObj.id : wordObj.id < 100 ? '0' + wordObj.id : wordObj.id}`;
+            document.getElementById('card-word').innerText = wordObj.word;
+            document.getElementById('card-meaning').innerText = wordObj.meaning;
+            document.getElementById('card-trap').innerText = wordObj.trap;
+            document.getElementById('card-example').innerText = `"${wordObj.example}"`;
+
+            if (isCardFlipped) {
+                flipCard();
+            }
+            updateMemorizedBadge();
+        }
+
+        function flipCard() {
+            const inner = document.getElementById('flashcard-inner');
+            isCardFlipped = !isCardFlipped;
+            if (isCardFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            const words = vocabData[currentDay];
+            if (currentCardIndex < words.length - 1) {
+                currentCardIndex++;
+                loadFlashcard();
+            } else {
+                showToast("Day의 마지막 단어입니다! 완벽해요 🌟");
+            }
+        }
+
+        function prevCard() {
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                loadFlashcard();
+            } else {
+                showToast("첫 번째 단어입니다.");
+            }
+        }
+
+        function toggleMemorized() {
+            const words = vocabData[currentDay];
+            const wordObj = words[currentCardIndex];
+            const key = `${currentDay}-${wordObj.id}`;
+
+            if (memorizedWords[key]) {
+                delete memorizedWords[key];
+                showToast("암기 미완료 상태로 변경되었습니다.");
+            } else {
+                memorizedWords[key] = true;
+                showToast("암기 완료 처리되었습니다! 👏");
+                triggerMiniConfetti();
+            }
+            localStorage.setItem('vocab_memorized_mint_v1', JSON.stringify(memorizedWords));
+            updateMemorizedBadge();
+        }
+
+        function updateMemorizedBadge() {
+            const words = vocabData[currentDay];
+            const wordObj = words[currentCardIndex];
+            const key = `${currentDay}-${wordObj.id}`;
+            const badge = document.getElementById('memorized-badge');
+
+            if (memorizedWords[key]) {
+                badge.className = "text-xs px-4 py-1.5 rounded-full font-bold transition flex items-center space-x-1.5 bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 border border-emerald-500";
+                badge.innerHTML = `<i class="fa-solid fa-check"></i> <span>암기 완료됨</span>`;
+            } else {
+                badge.className = "text-xs px-4 py-1.5 rounded-full font-bold transition flex items-center space-x-1.5 bg-slate-800 text-slate-200 hover:bg-emerald-600 hover:text-white border border-slate-700";
+                badge.innerHTML = `<i class="fa-solid fa-check"></i> <span>암기 미완료</span>`;
+            }
+        }
+
+        // Quiz Logic
+        function openQuiz(day) {
+            currentDay = day;
+            switchView('quiz');
+        }
+
+        function startQuiz(day) {
+            currentDay = parseInt(day);
+            currentQuizIndex = 0;
+            quizScore = 0;
+
+            document.getElementById('quiz-box').classList.remove('hidden');
+            document.getElementById('quiz-result-box').classList.add('hidden');
+
+            const words = [...vocabData[currentDay]];
+            shuffleArray(words);
+            quizQuestions = words.slice(0, 10);
+
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            const q = quizQuestions[currentQuizIndex];
+            const total = quizQuestions.length;
+
+            document.getElementById('quiz-counter').innerText = `${currentQuizIndex + 1} / ${total}`;
+            document.getElementById('quiz-prompt-text').innerText = q.meaning;
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+
+            const allWords = vocabData[currentDay];
+            let options = [q.word];
+            while (options.length < 4 && options.length < allWords.length) {
+                const randomWord = allWords[Math.floor(Math.random() * allWords.length)].word;
+                if (!options.includes(randomWord)) {
+                    options.push(randomWord);
+                }
+            }
+            shuffleArray(options);
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border border-teal-200 bg-white hover:border-teal-400 hover:bg-teal-50/40 font-bold text-slate-800 transition flex justify-between items-center group shadow-sm";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:text-teal-600"></i>`;
+                btn.onclick = () => checkAnswer(opt, q.word, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, correct, selectedBtn) {
+            const optionsContainer = document.getElementById('quiz-options');
+            const buttons = optionsContainer.getElementsByTagName('button');
+            
+            for (let btn of buttons) {
+                btn.disabled = true;
+                if (btn.innerText.includes(correct)) {
+                    btn.className = "w-full text-left p-4 rounded-2xl border border-emerald-500 bg-emerald-50 font-bold text-emerald-800 flex justify-between items-center shadow-sm";
+                }
+            }
+
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.classList.remove('hidden');
+
+            if (selected === correct) {
+                quizScore++;
+                selectedBtn.className = "w-full text-left p-4 rounded-2xl border border-emerald-500 bg-emerald-100 font-black text-emerald-900 flex justify-between items-center shadow-md";
+                feedback.className = "p-4 rounded-2xl font-bold text-sm bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center space-x-2";
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check text-lg"></i> <span>정답입니다! 완벽해요. 🐰 토비가 칭찬해요!</span>`;
+            } else {
+                selectedBtn.className = "w-full text-left p-4 rounded-2xl border border-rose-400 bg-rose-50 font-black text-rose-900 flex justify-between items-center shadow-md";
+                feedback.className = "p-4 rounded-2xl font-bold text-sm bg-rose-50 text-rose-800 border border-rose-200 flex items-center space-x-2";
+                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark text-lg"></i> <span>아쉽네요! 정답은 <strong class="text-slate-900 underline">${correct}</strong> 입니다.</span>`;
+            }
+
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            currentQuizIndex++;
+            if (currentQuizIndex < quizQuestions.length) {
+                loadQuizQuestion();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-box').classList.add('hidden');
+            document.getElementById('quiz-result-box').classList.remove('hidden');
+            document.getElementById('quiz-score-text').innerText = `${quizScore} / ${quizQuestions.length}`;
+            triggerConfetti();
+        }
+
+        // Helpers
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = message;
+            toast.classList.remove('translate-y-28', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-28', 'opacity-0');
+            }, 2500);
+        }
+
+        function triggerConfetti() {
+            confetti({
+                particleCount: 120,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        function triggerMiniConfetti() {
+            confetti({
+                particleCount: 40,
+                spread: 40,
+                origin: { y: 0.8 }
+            });
+        }
+    </script>
+</body>
+</html>
